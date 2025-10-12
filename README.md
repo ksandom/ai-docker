@@ -1,2 +1,3 @@
-# sd-docker
-Various dockerized stable diffusion solutions
+# AI-docker
+
+Dockerizing a large collection of AI tools that you can run locally, so that you can get them up quickly.
