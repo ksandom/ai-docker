@@ -23,7 +23,9 @@ function summariseEverything
 
 function complainMissingModels
 {
-    echo "$modelPath doesn't appear to exist yet." >&2
+    local testedPath="$1"
+
+    echo "$testedPath doesn't appear to exist yet." >&2
     echo "It doesn't make sense to start without it, or without contents." >&2
     echo "If this is the correct path, you can run:
     ../../../tools/sd-createModelDirs \"$modelPath\""
@@ -33,12 +35,23 @@ function checkModelPath
 {
     for checkPath in "$modelPath"/{,Stable-diffusion,VAE}; do
         if [ ! -e "$checkPath" ]; then
-            complainMissingModels
-            exit 1
+            complainMissingModels "$checkPath"
+            exit 1 # TODO Maybe a return is better in case we want to do more with this later.
         fi
     done
+
+    checkPath="$modelPath/Stable-diffusion"
+    modelSize="$(du -sk "$modelPath/Stable-diffusion" | awk '{print $1}')"
+
+    if [ "$modelSize" -lt "$minModelSize" ]; then
+        echo "There's very little data in the model directory \"$checkPath\". Try downloading some models first." >&2
+        exit 1 # TODO Maybe a return is better in case we want to do more with this later.
+    fi
 }
 
+
+# Defaults that probably shouldn't be adjusted by the user.
+minModelSize=1024
 
 # Path-derived information.
 fullPath="$(pwd)"
