@@ -1,0 +1,15 @@
+#!/bin/bash
+# Create the model directories.
+# Syntax: $0 "/path/where/the/models/will/go"
+
+pathToCreate="$1"
+
+if [ ! -e "$pathToCreate" ]; then
+    mkdir -pv "$pathToCreate"
+    cd "$pathToCreate"
+    for dirName in Stable-diffusion VAE VAE-approx deepbooru karlo; do
+        mkdir -pv "$dirName"
+    done
+fi
+
+echo "As a starting point, most of the models you'll download should be put in $pathToCreate/Stable-diffusion ."

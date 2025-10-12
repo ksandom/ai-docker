@@ -1,0 +1,6 @@
+#!/bin/bash
+# Build the container in the current directory.
+
+. ../../../libs/container.sh
+
+docker build -t "$containerName" .
