@@ -3,4 +3,5 @@
 
 . ../../../libs/container.sh
 
+set -x
 docker build -t "$containerName" .
