@@ -1,0 +1,21 @@
+#!/bin/bash
+# Run the container in the current directory.
+
+internalString="askldflksdfkjcsmd."
+
+if [ "$1" == "$internalString" ]; then
+    # Do all of the internal setup.
+    exit 0
+fi
+
+
+. ../../../libs/container.sh
+
+internalModelPath="/opt/stable-diffusion-webui/models"
+
+checkModelPath
+
+set -x
+mkdir -pv cache/{models,installation}
+
+docker run --gpus all -p "$port:$port" -v .:/docker -v cache/installation:/opt/stable-diffusion-webui -it /docker/pre-cache "$internalString"

@@ -1,0 +1,11 @@
+#!/bin/bash
+# Run the container in the current directory.
+
+. ../../../libs/container.sh
+
+internalModelPath="/opt/stable-diffusion-webui/models"
+
+checkModelPath
+
+set -x
+docker exec -it "$containerName" bash
