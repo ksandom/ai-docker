@@ -17,6 +17,7 @@ function summariseEverything
     port                $port
 
     modelPath           $modelPath
+    optDir              $optDir
 
     " >&2
 }
@@ -49,6 +50,11 @@ function checkModelPath
     fi
 }
 
+function createCache
+{
+    mkdir -p cache/opt
+}
+
 
 # Defaults that probably shouldn't be adjusted by the user.
 minModelSize=1024
@@ -57,6 +63,9 @@ minModelSize=1024
 fullPath="$(pwd)"
 read -r remaining containerName < <(splitPath "$fullPath")
 read -r remaining technology < <(splitPath "$remaining")
+
+# Other paths.
+optDir="$(pwd)/cache/opt"
 
 # Dockerfile-derived information.
 port="$(grep EXPOSE Dockerfile | awk '{print $2}')"

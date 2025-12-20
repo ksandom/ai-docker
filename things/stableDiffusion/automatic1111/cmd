@@ -3,9 +3,12 @@
 
 . ../../../libs/container.sh
 
-internalModelPath="/opt/stable-diffusion-webui/models"
-
 checkModelPath
+createCache
 
 set -x
-docker exec -it "$containerName" bash
+# TODO Make this more elegant.
+if ! docker exec -it "$containerName" -v "$modelPath:$internalModelPath" -v "$optDir:/opt/ai" -v .:/opt/docker /bin/bash; then
+    #docker run -it "$containerName" -v "$modelPath:$internalModelPath" -v "$optDir:/opt" -v .:/docker /bin/bash
+    docker run -it --entrypoint /bin/bash -v "$modelPath:$internalModelPath" -v "$optDir:/opt/ai" -v .:/opt/docker  "$containerName"
+fi

@@ -6,6 +6,7 @@
 internalModelPath="/opt/stable-diffusion-webui/models"
 
 checkModelPath
+createCache
 
 set -x
-docker run --gpus all -p "$port:$port" -v "$modelPath:$internalModelPath" "$containerName"
+docker run --gpus all -p "$port:$port" -v "$modelPath:$internalModelPath" -v "$optDir:/opt" -v .:/docker "$containerName"
