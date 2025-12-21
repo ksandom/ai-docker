@@ -1,0 +1,110 @@
+#!/bin/bash
+# Prepare a thing directory.
+# Documentation: docs/thing/creatingAThing.md
+
+absoluteThingDir="$(pwd)"
+
+function findRepoRoot
+{
+    local startDir="$(pwd)"
+    if [ "$startDir" == '/' ]; then
+        error "Failed to find the repo root."
+    elif [ ! -e ".git" ] || [ ! -e "docs/thing/creatingAThing.md" ] ; then
+        cd ..
+        findRepoRoot
+    else
+        pwd
+    fi
+    cd "$startDir"
+}
+
+function getRelativePrefix
+{
+    local numLevels="$1"
+    local result='..'
+
+    let startLevel=1
+
+    while [ "$startLevel" -lt "$numLevels" ]; do
+        result="$result/.."
+        let startLevel="$startLevel"+1
+    done
+
+    echo "$result"
+}
+
+function heading
+{
+    echo
+    echo "# $1"
+}
+
+function error
+{
+    echo "Error: $1" >&2
+    echo "See documentation in docs/thing/creatingAThing.md" >&2
+    exit 1
+}
+
+function useTemplate
+{
+    local template="shared/templates/$1"
+    local destination="$2"
+
+    if [ ! -e "$destination" ]; then
+        cp -v "$template" "$destination"
+    else
+        echo "Skipping \"$destination\" because it already exists."
+    fi
+}
+
+function useExecutableTemplate
+{
+    local template="shared/templates/$1"
+    local destination="$2"
+
+    useTemplate "$template" "$destination"
+    chmod 755 "$destination"
+}
+
+
+# Figure out stuff.
+repoRoot="$(findRepoRoot)"
+[ "$?" != 0 ] && exit $?
+relativeThingDir="$(echo "$absoluteThingDir" | sed "s#^$repoRoot/##g")"
+levels="$(echo "$relativeThingDir" | tr '/' ' ' | wc -w)"
+relativePrefix="$(getRelativePrefix "$levels")"
+firstLevel="$(echo "$relativeThingDir" | cut -d/ -f1)"
+
+heading "Summary:"
+echo "\
+    repoRoot            $repoRoot
+    relativeThingDir    $relativeThingDir
+    absoluteThingDir    $absoluteThingDir
+    levels              $levels
+    relativePrefix      $relativePrefix
+    firstLevel          $firstLevel"
+
+
+# Test that everything is as expected.
+if [ "$firstLevel" != 'things' ]; then
+    error "Expected the first part of the relativeThingDir to be \"things\", but it was \"$firstLevel\"."
+fi
+
+if [ "$levels" -lt 3 ]; then
+    error "Not enough levels ($levels) of abstraction. Expected things/CATEGORY/thing"
+fi
+
+
+heading "Setup pre-requisites."
+rm -f shared
+ln -s "$relativePrefix"/shared .
+
+heading "Create convenience symlinks."
+for script in shared/bin/*; do
+    ln -svf "$script" .
+done
+
+heading "Use templates."
+useTemplate "thing/README.md" "README.md"
+useExecutableTemplate "thing/inside/install.sh" inside-install
