@@ -1,0 +1,32 @@
+#!/bin/bash
+# Install conda inside the container.
+
+set -euo pipefail
+
+# ---- install prerequisites ----
+apt-get update
+apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    bzip2 \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# ---- install Miniconda ----
+MINICONDA_VERSION=py39_24.3.0-0
+MINICONDA_SH=Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh
+
+curl -fsSL https://repo.anaconda.com/miniconda/${MINICONDA_SH} -o /tmp/miniconda.sh
+
+bash /tmp/miniconda.sh -b -p /opt/conda
+rm -f /tmp/miniconda.sh
+
+# ---- make conda available ----
+export PATH=/opt/conda/bin:$PATH
+
+# Prevent conda from auto-activating base
+conda config --system --set auto_activate_base false
+
+# Update conda itself (safe & fast)
+conda update -y -n base -c defaults conda
+conda clean -afy

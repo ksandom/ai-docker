@@ -1,18 +1,20 @@
 #!/bin/bash
 # Installation steps, specific to the tool, to be done inside the container.
 
+# Install conda.
+/inside-tools/install-conda
+export PATH=/opt/conda/bin:$PATH
+
 # Create env with Python 3.9 (needed for torch==1.10.2 wheels)
-RUN conda create -y -n sd python=3.9 && conda clean -afy
+conda create -y -n sd python=3.9 && conda clean -afy
 
 # Maxwell-friendly Torch stack (SM_52) ? cu113 wheels
-RUN conda run -n sd python -m pip install --upgrade pip setuptools wheel && \
+conda run -n sd python -m pip install --upgrade pip setuptools wheel && \
     conda run -n sd python -m pip install --no-cache-dir \
       torch==1.10.2+cu113 torchvision==0.11.3+cu113 \
       --extra-index-url https://download.pytorch.org/whl/cu113
 
 # A1111 deps (allow optional pins to fail quietly)
-RUN conda run -n sd python -m pip install --no-cache-dir -r requirements_versions.txt || true && \
+conda run -n sd python -m pip install --no-cache-dir -r requirements_versions.txt || true && \
     conda run -n sd python -m pip install --no-cache-dir -r requirements.txt || true && \
     conda run -n sd python -m pip install --no-cache-dir typing-extensions importlib-metadata
-
-
