@@ -9,4 +9,4 @@ checkModelPath
 createCache
 
 set -x
-docker run --gpus all -p "$port:$port" -v "$modelPath:$internalModelPath" -v "$optDir:/opt" -v .:/docker "$containerName"
+docker run --gpus all -p "$port:$port" -v "$modelPath:$internalModelPath" -v "$optDir:/opt" -v .:/workspace "$containerName"
