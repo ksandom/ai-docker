@@ -1,3 +1,3 @@
 # Automatic1111
 
-Automatic1111 was the first UI that really caught on in a big way.
+Automatic1111 was the first StableDiffusion UI that really caught on in a big way.
