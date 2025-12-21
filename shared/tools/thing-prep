@@ -105,6 +105,13 @@ for script in shared/bin/*; do
     ln -svf "$script" .
 done
 
+heading "Copy inside tools."
+rm -Rf inside-tools-copy
+cp -R shared/inside-tools .
+rm inside-tools/README.md
+
 heading "Use templates."
 useTemplate "thing/README.md" "README.md"
+useTemplate "thing/thing-general-config.sh" ".thing-general-config.sh"
 useExecutableTemplate "thing/inside/install.sh" inside-install
+useTemplate "thing/inside-tools-README.md" inside-tools/README.md
