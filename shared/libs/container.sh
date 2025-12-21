@@ -70,7 +70,15 @@ optDir="$(pwd)/cache/opt"
 # Dockerfile-derived information.
 port="$(grep EXPOSE Dockerfile | awk '{print $2}')"
 
-# Models.
+# Thing config.
+if [ ! -e .thing-general-config.sh ]; then
+    echo ".thing-general-config.sh does not exist. That suggests that this thing has not been set up correctly. If you are the thing developer, please see docs/thing/creatingAThing.md" >&2
+    exit 1
+fi
+
+. .thing-general-config.sh
+
+# User config.
 if [ ! -e config.sh ]; then
     cp -v ../config.example.sh config.sh
     echo -e "^--- Remember to edit this to make sure that things like models are where you think they are." >&2
