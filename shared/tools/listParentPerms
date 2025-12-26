@@ -1,0 +1,11 @@
+#!/bin/bash
+# List the permissions of the parents of the current directory.
+
+currentDir="$(pwd)"
+
+while [ "$currentDir" != '/' ]; do
+    ls -ldh "$currentDir"
+
+    cd ..
+    currentDir="$(pwd)"
+done
