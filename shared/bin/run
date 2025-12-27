@@ -9,4 +9,5 @@ checkModelPath
 createCache
 
 set -x
-docker run --gpus all -p "$port:$port" -v "$modelPath:$internalModelPath:z" -v "$optDir:/opt:z" -v .:/workspace:z "$containerName"
+docker run --rm -it --device=/dev/kfd --device=/dev/dri --group-add video --ipc=host --security-opt seccomp=unconfined -v "$modelPath:$internalModelPath:z" -v "$optDir:/opt:z" -v .:/workspace:z "$containerName"
+
