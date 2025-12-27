@@ -115,3 +115,6 @@ useTemplate "thing/README.md" "README.md"
 useTemplate "thing/thing-general-config.sh" ".thing-general-config.sh"
 useExecutableTemplate "thing/inside/install.sh" inside-install
 useTemplate "thing/inside-tools-README.md" inside-tools/README.md
+
+heading "Other stuff that might be useful"
+ln -svf ./shared/tools/thing-prep update-thing
