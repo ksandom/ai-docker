@@ -2,11 +2,12 @@
 # Installation steps, specific to the tool, to be done inside the container.
 
 # Install conda.
-/inside-tools/install-conda
-export PATH=/opt/conda/bin:$PATH
+. /inside-tools/install-conda
 
 # Create env with Python 3.9 (needed for torch==1.10.2 wheels)
-conda create -y -n sd python=3.9 && conda clean -afy
+conda create -y -n sd python=3.9
+conda activate sd
+conda clean -afy
 
 # Maxwell-friendly Torch stack (SM_52) ? cu113 wheels
 conda run -n sd python -m pip install --upgrade pip setuptools wheel && \
