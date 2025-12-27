@@ -8,8 +8,6 @@ createCache
 
 set -x
 # TODO Make this more elegant.
-if ! docker exec -it "$containerName" -v "$modelPath:$internalModelPath" -v "$optDir:/opt/ai" -v .:/opt/docker /bin/bash; then
-    #docker run -it "$containerName" -v "$modelPath:$internalModelPath" -v "$optDir:/opt" -v .:/docker /bin/bash
-    #docker run -it --entrypoint /bin/bash -v "$modelPath:$internalModelPath" -v "$optDir:/opt/ai" -v .:/opt/docker  "$containerName"
+if ! docker exec -it -v "$modelPath:$internalModelPath:z" -v "$optDir:/opt:z" -v .:/workspace:z "$containerName" /bin/bash; then
     docker run -it --entrypoint /bin/bash -p "$port:$port" -v "$modelPath:$internalModelPath:z" -v "$optDir:/opt:z" -v .:/workspace:z "$containerName"
 fi
