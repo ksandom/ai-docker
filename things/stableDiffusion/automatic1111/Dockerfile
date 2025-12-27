@@ -8,6 +8,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ADD inside-install /usr/bin
 ADD inside-tools /inside-tools
 
-RUN inside-install
-
 WORKDIR /workspace
+
+RUN ./inside-install
