@@ -30,4 +30,6 @@ if [ ! -e /opt/conda/bin/conda ]; then
     # Update conda itself (safe & fast)
     conda update -y -n base -c defaults conda
     conda clean -afy
+
+    echo 'export PATH=/opt/conda/bin:$PATH' >> /root/.profile
 fi
