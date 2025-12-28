@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/bash -e
 # Installation steps, specific to the tool, to be done inside the container.
 
 # Install conda.
-. /workspace/inside-tools/install-conda
+. /inside/inside-tools/install-conda
 
 # Create env with Python 3.9 (needed for torch==1.10.2 wheels)
 conda create -y -n sd python=3.9

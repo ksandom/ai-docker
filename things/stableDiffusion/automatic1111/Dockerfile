@@ -12,4 +12,4 @@ ADD inside-tools /inside-tools
 
 WORKDIR /workspace
 
-#RUN inside-install
+#RUN /inside/inside-install
