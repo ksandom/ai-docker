@@ -8,6 +8,10 @@
 conda create -y -n sd python=3.9
 conda clean -afy
 
+# Get the repo.
+git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
+cd stable-diffusion-webui
+
 # Maxwell-friendly Torch stack (SM_52) ? cu113 wheels
 conda run -n sd python -m pip install --upgrade pip setuptools wheel && \
     conda run -n sd python -m pip install --no-cache-dir \
