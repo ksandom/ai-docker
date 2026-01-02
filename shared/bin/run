@@ -9,5 +9,5 @@ checkModelPath
 createCache
 
 set -x
-docker run --rm -it --device=/dev/kfd --device=/dev/dri --group-add video --ipc=host --security-opt seccomp=unconfined -v "$modelPath:$internalModelPath:z" -v "$optDir:/opt:z" -v .:/inside:z "$containerName"
+docker run --rm -it --name "$containerName" --device=/dev/kfd --device=/dev/dri --group-add video --ipc=host --security-opt seccomp=unconfined -v "$modelPath:$internalModelPath:z" -v "$optDir:/opt:z" -v .:/inside:z "$containerName"
 
