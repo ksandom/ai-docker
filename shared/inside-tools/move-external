@@ -1,0 +1,10 @@
+#!/bin/bash
+# Move external stuff to be ready to be exported.
+# Why: We want these directories to be mounted from outside so that they can persist locally between runs.
+
+externalThings="/workspace /home"
+
+cd /
+for externalThing in $externalThings; do
+    mv "$externalThing" "$externalThing".moved
+done

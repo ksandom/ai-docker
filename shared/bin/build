@@ -6,3 +6,6 @@
 ./update-thing
 set -x
 docker build -t "$containerName" .
+
+./cmd "/inside-tools-buildTime/dump-external"
+./cmd "/inside/inside-install"

@@ -3,15 +3,16 @@
 
 . ./shared/libs/container.sh
 
+CMD="${1:-/bin/bash}"
+
 checkModelPath
 createCache
 
 if docker ps | grep -q "$containerName"; then
     echo "Container already exists, let's join it."
     set -x
-    docker exec -it "$containerName" /bin/bash
+    docker exec -it "$containerName" "$CMD"
 else
     echo "Container doesn't yet exist. Let's create it."
-    set -x
-    docker run --rm -it --entrypoint /bin/bash --name "$containerName" -p "$port:$port" -v "$modelPath:$internalModelPath:z" -v .:/inside:z "$containerName"
+    ./run "$CMD"
 fi

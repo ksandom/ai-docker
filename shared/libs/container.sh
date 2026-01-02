@@ -18,6 +18,8 @@ function summariseEverything
 
     modelPath           $modelPath
     optDir              $optDir
+    homeDir             $homeDir
+    workspaceDir        $workspaceDir
 
     " >&2
 }
@@ -52,7 +54,7 @@ function checkModelPath
 
 function createCache
 {
-    mkdir -p cache/opt
+    mkdir -p cache/{opt,home,workspace}
 }
 
 
@@ -66,6 +68,8 @@ read -r remaining technology < <(splitPath "$remaining")
 
 # Other paths.
 optDir="$(pwd)/cache/opt"
+homeDir="$(pwd)/cache/home"
+workspaceDir="$(pwd)/cache/workspace"
 
 # Dockerfile-derived information.
 port="$(grep EXPOSE Dockerfile | awk '{print $2}')"

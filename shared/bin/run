@@ -5,9 +5,12 @@
 
 internalModelPath="/opt/stable-diffusion-webui/models"
 
+CMD="${1:-/bin/bash}"
+
 checkModelPath
 createCache
 
 set -x
-docker run --rm -it --name "$containerName" --device=/dev/kfd --device=/dev/dri --group-add video --ipc=host --security-opt seccomp=unconfined -v "$modelPath:$internalModelPath:z" -v .:/inside:z "$containerName"
+docker run --rm -it --entrypoint "$CMD" --name "$containerName" --device=/dev/kfd --device=/dev/dri --group-add video --ipc=host --security-opt seccomp=unconfined -v "$modelPath:$internalModelPath:z" -v "$homeDir:/home:z" -v "$workspaceDir:/workspace:z" -v .:/inside:z "$containerName"
 
+# -v "$optDir:/opt:z"
