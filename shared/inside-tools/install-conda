@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # Install conda inside the container.
 
 set -euo pipefail
@@ -7,13 +7,15 @@ export PATH=/opt/conda/bin:$PATH
 
 if [ ! -e /opt/conda/bin/conda ]; then
     # ---- install prerequisites ----
-    apt-get update
-    apt-get install -y --no-install-recommends \
+    sudo mkdir -p /opt
+    sudo chown ubuntu:ubuntu /opt # DISTRO-ASSUMPTION
+    sudo apt-get update
+    sudo apt-get install -y --no-install-recommends \
         ca-certificates \
         curl \
         bzip2 \
         git \
-        && rm -rf /var/lib/apt/lists/*
+        && sudo rm -rf /var/lib/apt/lists/*
 
     # ---- install Miniconda ----
     MINICONDA_VERSION=py39_24.3.0-0
@@ -31,5 +33,5 @@ if [ ! -e /opt/conda/bin/conda ]; then
     conda update -y -n base -c defaults conda
     conda clean -afy
 
-    echo 'export PATH=/opt/conda/bin:$PATH' >> /root/.profile
+    echo 'export PATH=/opt/conda/bin:$PATH' >> /home/ubuntu/.profile
 fi
