@@ -6,8 +6,12 @@
 checkModelPath
 createCache
 
-set -x
-# TODO Make this more elegant.
-if ! docker exec -it "$containerName" /bin/bash; then
+if docker ps | grep -q "$containerName"; then
+    echo "Container already exists, let's join it."
+    set -x
+    docker exec -it "$containerName" /bin/bash
+else
+    echo "Container doesn't yet exist. Let's create it."
+    set -x
     docker run --rm -it --entrypoint /bin/bash --name "$containerName" -p "$port:$port" -v "$modelPath:$internalModelPath:z" -v "$optDir:/opt:z" -v .:/inside:z "$containerName"
 fi
