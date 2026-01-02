@@ -3,5 +3,6 @@
 
 . ./shared/libs/container.sh
 
+./update-thing
 set -x
 docker build -t "$containerName" .
